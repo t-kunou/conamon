@@ -15,13 +15,16 @@ module ThreadingMacro
   alias_method '−＞', :thread_last
   alias_method '−✈', :thread_last
 
-  def thread_as(first, _, *procs)
-    threading_with_index([first] + procs,
-      -> (args, result) {
-        args.map{|arg|
-          arg.is_a?(BindMarker) ? result : arg
+  def thread_as(_, *procs)
+    -> (x) {
+      threading_with_index([x] + procs,
+        -> (args, result) {
+          args.map{|arg|
+            arg.is_a?(BindMarker) ? result : arg
+          }
         }
-      })
+      )
+    }
   end
 
   private
@@ -46,5 +49,23 @@ module ThreadingMacro
     else
       proc.call
     end
+  end
+
+  def _map(proc)
+    -> (collection) {
+      -> (xs) { xs.map{|x| proc.call(x)} }.call(collection)
+    }.curry
+  end
+
+  def _select(proc)
+    -> (collection) {
+      -> (xs) { xs.select{|x| proc.call(x)} }.call(collection)
+    }.curry
+  end
+
+  def _inject(init, proc)
+    -> (collection) {
+      -> (xs) { xs.inject(init) {|accumulator, x| proc.call(accumulator, x)} }.call(collection)
+    }.curry
   end
 end

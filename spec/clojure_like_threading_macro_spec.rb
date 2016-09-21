@@ -93,14 +93,76 @@ describe 'ClojureLikeThreadingMacro' do
   describe 'thread_as' do
     context 'Standard use case' do
       subject {
-        thread_as([1, 2, 3, 4], :foo,
+        thread_as(:foo,
           -> (x) { x.select{|e| e.even? } } & :foo,
           -> (x, y) { x.map{|e| e * y } } & :foo | 2,
           -> (x) { x.inject(0){|result, e| result + e } } & :foo
-        )
+        ).call [1, 2, 3, 4]
       }
 
       it { is_expected.to eq 12 }
+    end
+  end
+
+  describe 'ireko' do
+    subject {
+      thread_first(
+        ['aaa', 'bbb', 'ccc', 'ddd'],
+        ->(x) { x.map(&:upcase) },
+        thread_as(:xs,
+          ->(xs) { xs.map{|x| "Hello #{x}!!" } } & :xs
+        )
+      )
+    }
+
+    it { is_expected.to eq ['Hello AAA!!', 'Hello BBB!!', 'Hello CCC!!', 'Hello DDD!!'] }
+  end
+
+  describe '_map, _select, _inject' do
+    context 'macro' do
+      subject {
+        thread_last(
+          [1, 2, 3, 4],
+          _select(&:even?),
+          _map(-> (e) { e * 2 }),
+          _inject(100, -> (result, e) { result + e })
+        )
+      }
+
+      it { is_expected.to eq 112 }
+    end
+
+    context '^ its mean' do
+      subject {
+        _inject(100, -> (result, e) { result + e }).
+          call(_map(-> (e) { e * 2 }).
+                 call(_select(-> (e) { e.even? }).
+                        call([1, 2, 3, 4])))
+      }
+
+      it { is_expected.to eq 112 }
+    end
+
+    context '^^ its mean' do
+      subject {
+        -> (collection) { collection.inject(100) {|result, e| result + e } }.
+          call(-> (collection) { collection.map {|e| e * 2 } }.
+            call(-> (collection) { collection.select{ |e| e.even? } }.
+              call([1, 2, 3, 4])))
+      }
+
+      it { is_expected.to eq 112 }
+    end
+
+    context '^^^ its mean' do
+      subject {
+        [1, 2, 3, 4].
+          select(&:even?).
+          map {|e| e * 2}.
+          inject(100) {|result, e| result + e }
+      }
+
+      it { is_expected.to eq 112 }
     end
   end
 end
