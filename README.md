@@ -34,7 +34,7 @@ Clojureで書いた普通のS式で
 ```ruby
 -> (collection) { collection.inject(100) {|result, e| result + e } }.
   call(-> (collection) { collection.map {|e| e * 2 } }.
-    call(-> (collection) { collection.select{ |e| e.even? } }.
+    call(-> (collection) { collection.select(&:even?) }.
       call([1, 2, 3, 4])))
 ```
 
