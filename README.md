@@ -1,41 +1,66 @@
 # ClojureLikeThreadingMacro
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/clojure_like_threading_macro`. To experiment with that code, run `bin/console` for an interactive prompt.
+ClojureのスレッディングマクロっぽいものをRubyでもつかえるようにするという実験的なシロモノです。
 
-TODO: Delete this and the text above, and describe your gem
+## スレッディングマクロとは
 
-## Installation
+Clojureで書いた普通のS式で
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'clojure_like_threading_macro'
+```clojure
+(reduce + 100
+  (map #(* %1 2)
+      (filter even?
+            [1 2 3 4])))
 ```
 
-And then execute:
+の様なコードが有ったとき、4行目、3行目、2行目、1行目の順に関数が実行されます。
 
-    $ bundle
+これをスレッディングマクロを使用すると
 
-Or install it yourself as:
+```clojure
+(->>
+  [1 2 3 4]
+  (filter even?)
+  (map #(* %1 2))
+  (reduce + 100))
+```
 
-    $ gem install clojure_like_threading_macro
+の様に書くことができ、上から順に関数が実行されます。
 
-## Usage
+## このgemで今出来ること
 
-TODO: Write usage instructions here
+このgem(になる予定のブツ)では、上述したClojureコードと同等の事を行うRubyのコード
 
-## Development
+```ruby
+-> (collection) { collection.inject(100) {|result, e| result + e } }.
+  call(-> (collection) { collection.map {|e| e * 2 } }.
+    call(-> (collection) { collection.select{ |e| e.even? } }.
+      call([1, 2, 3, 4])))
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+を、下記の様に書くことが出来ます。
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+thread_last(
+  [1, 2, 3, 4],
+  _select(&:even?),
+  _map(-> (e) { e * 2 }),
+  _inject(100, -> (result, e) { result + e })
+)
+```
 
-## Contributing
+ちなみに、このコードはラムダを使わずに普通に書くとこうです。
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/clojure_like_threading_macro. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+```ruby
+[1, 2, 3, 4].
+  select(&:even?).
+  map {|e| e * 2}.
+  inject(100) {|result, e| result + e }
+```
 
+~~これで十分ですよね:smile:~~
 
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
+## このgemでまだ出来ないこと
+- as-> が本家のものに比べて不完全です
+- some->, some->>, cond->, cond->> に未対応です
+- いちいちラムダ式を書くのが面倒なので糖衣構文を提供したいのですが未着手です
