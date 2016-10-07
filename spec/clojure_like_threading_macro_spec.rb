@@ -125,7 +125,20 @@ describe 'ClojureLikeThreadingMacro' do
           [1, 2, 3, 4],
           _select(&:even?),
           _map(-> (e) { e * 2 }),
-          _inject(100, -> (result, e) { result + e })
+          _inject(100, &:+)
+        )
+      }
+
+      it { is_expected.to eq 112 }
+    end
+
+    context 'macro with lambda' do
+      subject {
+        thread_last(
+          [1, 2, 3, 4],
+          _select(-> (x) { x.even? } ),
+          _map(-> (e) { e * 2 }),
+          _inject(100, &:+)
         )
       }
 

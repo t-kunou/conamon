@@ -57,15 +57,27 @@ module ThreadingMacro
     }.curry
   end
 
-  def _select(proc)
+  def _select(proc = nil, &block)
     -> (collection) {
-      -> (xs) { xs.select{|x| proc.call(x)} }.call(collection)
+      -> (xs) {
+        if block_given?
+          xs.select(&block)
+        else
+          xs.select{|x| proc.call(x)}
+        end
+      }.call(collection)
     }.curry
   end
 
-  def _inject(init, proc)
+  def _inject(init, proc = nil, &block)
     -> (collection) {
-      -> (xs) { xs.inject(init) {|accumulator, x| proc.call(accumulator, x)} }.call(collection)
+      -> (xs) {
+        if block_given?
+          xs.inject(init, &block)
+        else
+          xs.inject(init) {|accumulator, x| proc.call(accumulator, x)}
+        end
+      }.call(collection)
     }.curry
   end
 end
