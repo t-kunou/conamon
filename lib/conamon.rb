@@ -1,5 +1,5 @@
-require "clojure_like_threading_macro/version"
-require "clojure_like_threading_macro/threading_macro"
+require "conamon/version"
+require "conamon/threading_macro"
 
 class Proc
   attr_reader :binding_args
@@ -29,7 +29,7 @@ class Proc
   end
 end
 
-module ClojureLikeThreadingMacro
+module Conamon
   include ThreadingMacro
 end
 

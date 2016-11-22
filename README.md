@@ -1,4 +1,4 @@
-# ClojureLikeThreadingMacro
+# conamon (ClojureLikeThreadingMacro)
 
 ClojureのスレッディングマクロっぽいものをRubyでもつかえるようにするという実験的なシロモノです。
 

@@ -1,4 +1,4 @@
-require 'clojure_like_threading_macro/bind_marker'
+require 'conamon/bind_marker'
 
 module ThreadingMacro
   def thread_last(*procs)

@@ -1,8 +1,8 @@
 require 'rspec'
-require 'clojure_like_threading_macro'
+require 'conamon'
 
-describe 'ClojureLikeThreadingMacro' do
-  include ClojureLikeThreadingMacro
+describe 'Conamon' do
+  include Conamon
 
   describe 'thread_last' do
     context 'Standard use case' do
