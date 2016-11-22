@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'clojure_like_threading_macro/version'
+require 'conamon/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "clojure_like_threading_macro"
-  spec.version       = ClojureLikeThreadingMacro::VERSION
+  spec.name          = "conamon"
+  spec.version       = Conamon::VERSION
   spec.authors       = ["kunou"]
   spec.email         = ["t-kunou@esm.co.jp"]
 
