@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/t-kunou/conamon.svg?branch=master)](https://travis-ci.org/t-kunou/conamon)
+
 # conamon (ClojureLikeThreadingMacro)
 
 ClojureのスレッディングマクロっぽいものをRubyでもつかえるようにするという実験的なシロモノです。
