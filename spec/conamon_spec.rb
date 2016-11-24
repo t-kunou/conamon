@@ -1,5 +1,6 @@
 require 'rspec'
 require 'conamon'
+require 'spec_helper'
 
 describe 'Conamon' do
   include Conamon

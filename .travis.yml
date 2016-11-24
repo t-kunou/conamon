@@ -10,3 +10,8 @@ cache: bundler
 
 notifications:
   email: false
+
+addons:
+  code_climate:
+    repo_token:
+      secure: "IKK4HRv0lD838sGhGiZIDqIfRyw+77z36BScwjEB/HSBM+eSl4tvxVYwkB9FwMZOdSp5ShhobcqNZOWIoA6aWHpY+3A4hBB+rpaM5XycRv4PMsUt5VYIwjHk/rKbQmgTL1hnCa2EoSuc2SQHHmB4AmHfLjYEM/oWXzTbiQY0CLvr2tSvKbkhCcNW2909i8BAlSRGZbu4XYwLko7tSBvQHXdk0iUUB7iOrjKok/eQbt98+1s0y+vO0ql8fV239bgcrRA/TpHxslPFY4Ig66wbBW/OqDrKB+fOhs+WGGU8tY/3z3/qvSib+TwX9dD+vnmoA8/kjnQv0c7H246JxQyNeDRv/Pd/1Q7TKzZCrB0Hf/Kvig9VSFQsmfQ/ZZnjxLfCkWR14IG2m+1cgFJftGIeb4SYc4WSQAiY1nb0KhplLW6ECc9fYwitQmcu770jzRJs+q47Lf9EhXA9R+Pipxe8+wkttghW8SmeDyKDd6v/oZ3Zv3fCgMxpDnUCvF6hcoHeUK2+ztbQAVYQI6aDCFJ2y4J60XkQru/4ZA6AFIxdMoFGvRUIFetNpUznvu870/FaoH9eID7sL+1JPc9/hc2kbVVIPKmKiP5FSD5teiJxSKxn4YRtOD0RuRLKJ98BuFjgvg9hmU4CGkwAseFeIWNMA4jsYOUltXXDNjdIovtmee0="
